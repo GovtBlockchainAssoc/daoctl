@@ -1,0 +1,52 @@
+package cmd
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/alexeyco/simpletable"
+	"github.com/eoscanada/eos-go"
+	"github.com/hypha-dao/daoctl/models"
+	"github.com/hypha-dao/daoctl/views"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+)
+
+var getProposalsCmd = &cobra.Command{
+	Use:   "proposals [account name]",
+	Short: "retrieve proposals",
+	Long:  "retrieve all proposals",
+	// Args:  cobra.RangeArgs(1, 2),
+	Run: func(cmd *cobra.Command, args []string) {
+		api := eos.New(viper.GetString("EosioEndpoint"))
+		ctx := context.Background()
+
+		if viper.GetBool("global-active") == true {
+			printProposalTable(ctx, api, "Completed Proposals", "proposal")
+		}
+
+		if viper.GetBool("global-include-proposals") == true {
+			printProposalTable(ctx, api, "Open Proposals", "proposal")
+		}
+
+		if viper.GetBool("global-failed-proposals") == true {
+			printProposalTable(ctx, api, "Failed Proposals", "failedprops")
+		}
+
+		if viper.GetBool("global-include-archive") == true {
+			printProposalTable(ctx, api, "Archived Proposals", "proparchive")
+		}
+	},
+}
+
+func printProposalTable(ctx context.Context, api *eos.API, title, scope string) {
+	fmt.Println("\n", title)
+	proposals := models.Proposals(ctx, api, scope)
+	proposalsTable := views.ProposalTable(proposals)
+	proposalsTable.SetStyle(simpletable.StyleCompactLite)
+	fmt.Println("\n" + proposalsTable.String() + "\n\n")
+}
+
+func init() {
+	getCmd.AddCommand(getProposalsCmd)
+}

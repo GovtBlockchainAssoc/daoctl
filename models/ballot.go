@@ -18,8 +18,8 @@ type Ballot struct {
 	Votes       []Vote
 	PassVotes   eos.Asset
 	RejectVotes eos.Asset
-	BeginTime eos.BlockTimestamp `json:"begin_time"`
-	EndTime   eos.BlockTimestamp `json:"end_time"`
+	BeginTime   eos.BlockTimestamp `json:"begin_time"`
+	EndTime     eos.BlockTimestamp `json:"end_time"`
 }
 
 // Vote ...
@@ -56,7 +56,7 @@ func NewBallot(ctx context.Context, api *eos.API, ballotName eos.Name) (*Ballot,
 	voteRequest.Code = viper.GetString("TelosDecideContract")
 	voteRequest.Scope = string(ballot[0].BallotName)
 	voteRequest.Table = "votes"
-	voteRequest.Limit = 500
+	voteRequest.Limit = 500 // TODO: move to configuration or otherwise dynamically calculate
 	voteRequest.JSON = true
 	voteResponse, err := api.GetTableRows(ctx, voteRequest)
 	if err != nil {
@@ -64,48 +64,46 @@ func NewBallot(ctx context.Context, api *eos.API, ballotName eos.Name) (*Ballot,
 	}
 	voteResponse.JSONToStructs(&votes)
 
-  votesAgainstTotal, _ := eos.NewAssetFromString("0.00 HVOICE")
-  votesForTotal, _ := eos.NewAssetFromString("0.00 HVOICE")
+	votesAgainstTotal, _ := eos.NewAssetFromString("0.00 " + viper.GetString("VoteTokenSymbol"))
+	votesForTotal, _ := eos.NewAssetFromString("0.00 " + viper.GetString("VoteTokenSymbol"))
 
 	for _, vote := range votes {
 		vote.VoteSelections = make(map[string]eos.Asset)
 		for index, selection := range vote.WeightedVotes {
 			vote.VoteSelections[selection.Key] = vote.WeightedVotes[index].Value
 			if selection.Key == "pass" {
-			  votesForTotal = votesForTotal.Add(vote.WeightedVotes[index].Value)
-      } else {
-        votesAgainstTotal = votesAgainstTotal.Add(vote.WeightedVotes[index].Value)
-      }
+				votesForTotal = votesForTotal.Add(vote.WeightedVotes[index].Value)
+			} else {
+				votesAgainstTotal = votesAgainstTotal.Add(vote.WeightedVotes[index].Value)
+			}
 		}
 	}
 
-  ballot[0].PassVotes = votesForTotal
-  ballot[0].RejectVotes = votesAgainstTotal
+	ballot[0].PassVotes = votesForTotal
+	ballot[0].RejectVotes = votesAgainstTotal
 	ballot[0].Votes = votes
 	return &ballot[0], nil
 }
 
-// GetHvoiceSupply ...
-func GetHvoiceSupply(ctx context.Context, api *eos.API) (*eos.Asset, error) {
+// GetVoteTokenSupply ...
+func GetVoteTokenSupply(ctx context.Context, api *eos.API) (*eos.Asset, error) {
 	type Supply struct {
-		HvoiceSupply eos.Asset `json:"supply"`
+		VoteTokenSupply eos.Asset `json:"supply"`
 	}
 
 	var supply []Supply
-	// telosDecide := eos.MustStringToName(viper.GetString("TelosDecideContract"))
-
 	var request eos.GetTableRowsRequest
 	request.Code = viper.GetString("TelosDecideContract")
 	request.Scope = viper.GetString("TelosDecideContract")
 	request.Table = "treasuries"
 	request.Limit = 1
-	request.LowerBound = string("HVOICE")
-	request.UpperBound = string("HVOICE")
+	request.LowerBound = viper.GetString("VoteTokenSymbol")
+	request.UpperBound = viper.GetString("VoteTokenSymbol")
 	request.JSON = true
 	response, err := api.GetTableRows(ctx, request)
 	if err != nil {
 		return nil, err
 	}
 	response.JSONToStructs(&supply)
-	return &supply[0].HvoiceSupply, nil
+	return &supply[0].VoteTokenSupply, nil
 }

@@ -38,7 +38,7 @@ var getBallotCmd = &cobra.Command{
 		fmt.Println("\n\n" + views.BallotHeader(*ballot) + "\n\n")
 		votesTable, totalVotes := views.VotesTable(ballot.Votes)
 		fmt.Println(votesTable.String())
-		hvoice, err := models.GetHvoiceSupply(ctx, api)
+		hvoice, err := models.GetVoteTokenSupply(ctx, api)
 		if err != nil {
 			fmt.Println("Cannot read HVOICE supply.")
 			return

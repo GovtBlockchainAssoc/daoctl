@@ -24,8 +24,8 @@ func TableToData(table *simpletable.Table) [][]string {
 }
 
 func scopeApprovals(scope string) bool {
-  if scope == "assignment" || scope == "role" || scope == "payout"{
-    return true
-  }
-  return false
+	if scope == "" {
+		return true
+	}
+	return false
 }
