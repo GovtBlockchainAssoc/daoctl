@@ -24,7 +24,7 @@ func TableToData(table *simpletable.Table) [][]string {
 }
 
 func scopeApprovals(scope string) bool {
-	if scope == "" {
+	if scope == "passedprops" {
 		return true
 	}
 	return false

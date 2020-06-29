@@ -21,29 +21,20 @@ var cfgFile string
 var yamlDefault = []byte(`
 EosioEndpoint: https://api.telos.kitchen
 AssetsAsFloat: true
-DAOContract: dao.hypha
-Treasury:
-  TokenContract: token.hypha
-  Symbol: HUSD
-  Contract: bank.hypha
-  EthUSDTContract: 0xdac17f958d2ee523a2206206994597c13d831ec7
-  EthUSDTAddress: 0xC20f453a4B4995CA032570f212988F4978B35dDd
-  BtcAddress: 35hfgfaUouzYixTUDV6CFqMiTSZcuNtTf9
-TelosDecideContract: trailservice
+DAOContract: dao.gba
+TelosDecideContract: telos.decide
 `)
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "daoctl",
-	Short: "Decentralized Autonomous Organization (DAO) control application for Hypha DAO query and actions",
-	Long: `Decentralized Autonomous Organization (DAO) control application for Hypha DAO query and actions.
-Query and manage roles, assignments, periods, payouts, and proposals.
+	Short: "Decentralized Autonomous Organization (DAO) control CLI",
+	Long: `Decentralized Autonomous Organization (DAO) control CLI.
 
 Example use:
-	daoctl get assignments --include-proposals
-	daoctl get treasury
-
-Hypha - Dapps for a New World - visit online @ hypha.earth`,
+	daoctl get proposals --scope passedprops
+	daoctl get proposal 34
+`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -57,18 +48,12 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is ./daoctl.yaml)")
 	RootCmd.PersistentFlags().BoolP("debug", "", false, "Enables verbose debug messages")
-	// RootCmd.Flags().BoolP("assets-as-floats", "f", false, "Format assets objects as floats (helpful for CSV export)")
-	//RootCmd.Flags().BoolP("include-proposals", "p", false, "Include proposals when retrieving objects")
+	RootCmd.Flags().BoolP("assets-as-floats", "f", false, "Format assets objects as floats (helpful for CSV export)")
 	RootCmd.PersistentFlags().StringP("vault-file", "", "./eosc-vault.json", "Wallet file that contains encrypted key material")
 	//RootCmd.PersistentFlags().IntP("delay-sec", "", 0, "Set time to wait before transaction is executed, in seconds. Defaults to 0 second.")
 	RootCmd.PersistentFlags().IntP("expiration", "", 30, "Set time before transaction expires, in seconds. Defaults to 30 seconds.")
-	RootCmd.PersistentFlags().BoolP("include-archive", "o", false, "include a table with the archive objects")
-	RootCmd.PersistentFlags().BoolP("include-proposals", "", false, "include a table with proposals in the output")
-	RootCmd.PersistentFlags().BoolP("active", "a", true, "show active objects")
-	RootCmd.PersistentFlags().BoolP("failed-proposals", "", false, "include a table with failed proposals")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -119,13 +104,13 @@ func initConfig() {
 	colorReset := "\033[0m"
 	info, err := api.GetInfo(context.Background())
 	if err != nil {
-		fmt.Print(string(colorRed), "\nWARNING: Unable to get Hypha Blockchain Node info. Please check the EosioEndpoint configuration.\n\n")
+		fmt.Print(string(colorRed), "\nWARNING: Unable to get Blockchain Node info. Please check the EosioEndpoint configuration.\n\n")
 	}
 
 	if hex.EncodeToString(info.ChainID) == "4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11" {
-		fmt.Print(string(colorRed), "\nWARNING: Connecting to the Hypha Production Mainnet")
+		fmt.Print(string(colorRed), "\nWARNING: Connecting to the DAO Production Mainnet")
 	} else if hex.EncodeToString(info.ChainID) == "1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f" {
-		fmt.Print(string(colorCyan), "\nNETWORK: Connecting to the Hypha Test Network")
+		fmt.Print(string(colorCyan), "\nNETWORK: Connecting to the DAO Test Network")
 	}
 	fmt.Println(string(colorReset))
 }

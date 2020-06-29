@@ -2,7 +2,7 @@
 
 ### View Roles
 ```
-./daoctl get roles
+./daoctl get proposals
 ```
 #### Include proposals
 ```

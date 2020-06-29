@@ -28,7 +28,7 @@ var getBallotCmd = &cobra.Command{
 		ctx := context.Background()
 		ac := accounting.NewAccounting("", 0, ",", ".", "%s %v", "%s (%v)", "%s --") // TODO: make this configurable
 
-		ballotName := eos.Name("hypha1....." + args[0])
+		ballotName := eos.Name(viper.GetString("BallotPrefix" + args[0])) // TODO: this will break; need to make it dynamic
 
 		ballot, err := models.NewBallot(ctx, api, ballotName)
 		if err != nil {
@@ -38,14 +38,14 @@ var getBallotCmd = &cobra.Command{
 		fmt.Println("\n\n" + views.BallotHeader(*ballot) + "\n\n")
 		votesTable, totalVotes := views.VotesTable(ballot.Votes)
 		fmt.Println(votesTable.String())
-		hvoice, err := models.GetVoteTokenSupply(ctx, api)
+		voteTokenSupply, err := models.GetVoteTokenSupply(ctx, api)
 		if err != nil {
-			fmt.Println("Cannot read HVOICE supply.")
+			fmt.Println("Cannot read Vote Token supply.")
 			return
 		}
 
-		supply := big.NewFloat(float64(hvoice.Amount) / math.Pow10(int(hvoice.Precision)))
-		votes := big.NewFloat(float64(totalVotes.Amount) / math.Pow10(int(hvoice.Precision)))
+		supply := big.NewFloat(float64(voteTokenSupply.Amount) / math.Pow10(int(voteTokenSupply.Precision)))
+		votes := big.NewFloat(float64(totalVotes.Amount) / math.Pow10(int(voteTokenSupply.Precision)))
 		quorum := supply.Mul(supply, big.NewFloat(0.2))
 
 		var quorumMet, isPassing, isVotingClosed bool
@@ -68,7 +68,7 @@ var getBallotCmd = &cobra.Command{
 
 		fmt.Println()
 		output := []string{
-			fmt.Sprintf("HVOICE Supply|%v", util.FormatAsset(hvoice, 0)),
+			fmt.Sprintf("Vote Token Supply|%v", util.FormatAsset(voteTokenSupply, 0)),
 			fmt.Sprintf("Quorum|%v", ac.FormatMoneyBigFloat(quorum)),
 			fmt.Sprintf("Votes|%v", ac.FormatMoneyBigFloat(votes)),
 			fmt.Sprintln(),
@@ -78,8 +78,6 @@ var getBallotCmd = &cobra.Command{
 		}
 		fmt.Println(columnize.SimpleFormat(output))
 		fmt.Println()
-
-		//if ballot.Status != "closed"
 	},
 }
 

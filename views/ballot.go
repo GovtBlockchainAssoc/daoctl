@@ -2,9 +2,11 @@ package views
 
 import (
 	"fmt"
-  "github.com/hypha-dao/daoctl/util"
 
-  "github.com/alexeyco/simpletable"
+	"github.com/hypha-dao/daoctl/util"
+	"github.com/spf13/viper"
+
+	"github.com/alexeyco/simpletable"
 	"github.com/eoscanada/eos-go"
 	"github.com/hypha-dao/daoctl/models"
 	"github.com/ryanuber/columnize"
@@ -40,14 +42,14 @@ func VotesTable(votes []models.Vote) (*simpletable.Table, eos.Asset) {
 	table := simpletable.New()
 	table.Header = votesHeader()
 
-	votesAgainstTotal, _ := eos.NewAssetFromString("0.00 HVOICE")
-	votesForTotal, _ := eos.NewAssetFromString("0.00 HVOICE")
-	totalVotes, _ := eos.NewAssetFromString("0.00 HVOICE")
+	voteTokenSymbol := viper.GetString("VoteTokenSymbol")
+	votesAgainstTotal, _ := eos.NewAssetFromString("0.00 " + voteTokenSymbol)
+	votesForTotal, _ := eos.NewAssetFromString("0.00 " + voteTokenSymbol)
+	totalVotes, _ := eos.NewAssetFromString("0.00 " + voteTokenSymbol)
 
 	for _, vote := range votes {
 
 		var votesFor, votesAgainst eos.Asset
-		//if vote.VoteSelections["pass"].Amount > 0 {
 		if vote.WeightedVotes[0].Key == "pass" {
 			votesFor = vote.VotingPower
 			votesForTotal = votesForTotal.Add(vote.VotingPower)

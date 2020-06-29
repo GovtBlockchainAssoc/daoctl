@@ -12,9 +12,9 @@ import (
 )
 
 var getProposalCmd = &cobra.Command{
-	Use:   "role [role id]",
-	Short: "retrieve role details",
-	Long:  "retrieve the detailed about a role",
+	Use:   "proposal [proposal id]",
+	Short: "retrieve proposal details",
+	Long:  "retrieve the detail about a proposal",
 	Args:  cobra.RangeArgs(1, 1),
 	Run: func(cmd *cobra.Command, args []string) {
 		api := eos.New(viper.GetString("EosioEndpoint"))

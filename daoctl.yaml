@@ -6,3 +6,4 @@ DAOUser: z.gba
 HyperionEndpoint: https://mainnet.telosusa.io/v2
 VoteTokenSymbol: GBAV
 RewardTokenSymbol: GBAR
+BallotPrefix: gba........

@@ -21,21 +21,12 @@ var getProposalsCmd = &cobra.Command{
 		api := eos.New(viper.GetString("EosioEndpoint"))
 		ctx := context.Background()
 
-		if viper.GetBool("global-active") == true {
-			printProposalTable(ctx, api, "Completed Proposals", "proposal")
+		tableScope := viper.GetString("DAOContract")
+		if viper.GetString("get-proposal-cmd-scope") != "open" {
+			tableScope = viper.GetString("get-proposal-cmd-scope")
 		}
 
-		if viper.GetBool("global-include-proposals") == true {
-			printProposalTable(ctx, api, "Open Proposals", "proposal")
-		}
-
-		if viper.GetBool("global-failed-proposals") == true {
-			printProposalTable(ctx, api, "Failed Proposals", "failedprops")
-		}
-
-		if viper.GetBool("global-include-archive") == true {
-			printProposalTable(ctx, api, "Archived Proposals", "proparchive")
-		}
+		printProposalTable(ctx, api, "Proposals", tableScope)
 	},
 }
 
@@ -48,5 +39,7 @@ func printProposalTable(ctx context.Context, api *eos.API, title, scope string) 
 }
 
 func init() {
+	getProposalsCmd.Flags().StringP("scope", "s", "open", "table scope for listing proposals (try 'passedprops')")
+
 	getCmd.AddCommand(getProposalsCmd)
 }
