@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GovtBlockchainAssoc/daoctl/models"
+	"github.com/GovtBlockchainAssoc/daoctl/views"
 	"github.com/alexeyco/simpletable"
 	"github.com/eoscanada/eos-go"
-	"github.com/hypha-dao/daoctl/models"
-	"github.com/hypha-dao/daoctl/views"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -21,9 +21,11 @@ var getProposalsCmd = &cobra.Command{
 		api := eos.New(viper.GetString("EosioEndpoint"))
 		ctx := context.Background()
 
-		tableScope := viper.GetString("DAOContract")
-		if viper.GetString("get-proposal-cmd-scope") != "open" {
-			tableScope = viper.GetString("get-proposal-cmd-scope")
+		var tableScope string
+		if viper.GetString("get-proposals-cmd-scope") == "open" {
+			tableScope = "proposal"
+		} else {
+			tableScope = viper.GetString("get-proposals-cmd-scope")
 		}
 
 		printProposalTable(ctx, api, "Proposals", tableScope)
@@ -31,7 +33,7 @@ var getProposalsCmd = &cobra.Command{
 }
 
 func printProposalTable(ctx context.Context, api *eos.API, title, scope string) {
-	fmt.Println("\n", title)
+	fmt.Println("\n", title, " --scope=", scope)
 	proposals := models.Proposals(ctx, api, scope)
 	proposalsTable := views.ProposalTable(proposals)
 	proposalsTable.SetStyle(simpletable.StyleCompactLite)

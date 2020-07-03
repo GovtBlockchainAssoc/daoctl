@@ -7,11 +7,11 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/hypha-dao/daoctl/util"
+	"github.com/GovtBlockchainAssoc/daoctl/util"
 
+	"github.com/GovtBlockchainAssoc/daoctl/models"
+	"github.com/GovtBlockchainAssoc/daoctl/views"
 	eos "github.com/eoscanada/eos-go"
-	"github.com/hypha-dao/daoctl/models"
-	"github.com/hypha-dao/daoctl/views"
 	"github.com/leekchan/accounting"
 	"github.com/ryanuber/columnize"
 	"github.com/spf13/cobra"
@@ -28,7 +28,7 @@ var getBallotCmd = &cobra.Command{
 		ctx := context.Background()
 		ac := accounting.NewAccounting("", 0, ",", ".", "%s %v", "%s (%v)", "%s --") // TODO: make this configurable
 
-		ballotName := eos.Name(viper.GetString("BallotPrefix" + args[0])) // TODO: this will break; need to make it dynamic
+		ballotName := eos.Name(viper.GetString("BallotPrefix") + args[0]) // TODO: this will break; need to make it dynamic
 
 		ballot, err := models.NewBallot(ctx, api, ballotName)
 		if err != nil {

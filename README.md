@@ -1,20 +1,13 @@
 
 
-### View Roles
+### View Proposals
 ```
 ./daoctl get proposals
 ```
-#### Include proposals
+#### Vote on a Proposal
+Voting requires signing a transaction, so the vault-file parameters is required.
 ```
-./daoctl get roles --include-proposals
-```
-### View Assignments
-```
-./daoctl get payouts
-```
-### View Treasury
-```
-./daoctl get treasury
+./daoctl --config daoctl-test.yaml --vault-file ~/dev/gba/gba-vault-test.json vote 14 pass
 ```
 ### View Details of a Ballot
 ```

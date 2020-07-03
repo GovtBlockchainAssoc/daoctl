@@ -3,12 +3,12 @@ package views
 import (
 	"fmt"
 
-	"github.com/hypha-dao/daoctl/util"
+	"github.com/GovtBlockchainAssoc/daoctl/util"
 	"github.com/spf13/viper"
 
+	"github.com/GovtBlockchainAssoc/daoctl/models"
 	"github.com/alexeyco/simpletable"
 	"github.com/eoscanada/eos-go"
-	"github.com/hypha-dao/daoctl/models"
 	"github.com/ryanuber/columnize"
 )
 

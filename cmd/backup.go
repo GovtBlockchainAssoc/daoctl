@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/GovtBlockchainAssoc/daoctl/models"
 	"github.com/eoscanada/eos-go"
-	"github.com/hypha-dao/daoctl/models"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

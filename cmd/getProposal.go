@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/GovtBlockchainAssoc/daoctl/models"
 	eos "github.com/eoscanada/eos-go"
-	"github.com/hypha-dao/daoctl/models"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/GovtBlockchainAssoc/daoctl/util"
 	eos "github.com/eoscanada/eos-go"
-	"github.com/hypha-dao/daoctl/util"
 	"github.com/ryanuber/columnize"
 	"github.com/spf13/viper"
 )
@@ -47,6 +47,7 @@ func NewProposal(daoObj DAOObject) Proposal {
 	var a Proposal
 	a.ID = daoObj.ID
 	a.Recipient = daoObj.Names["recipient"]
+	a.Proposer = daoObj.Names["owner"]
 	a.Title = daoObj.Strings["title"]
 	a.BallotName = daoObj.Names["ballot_id"]
 	a.RewardTokenAmount = daoObj.Assets["reward_token_amount"]
@@ -57,7 +58,7 @@ func NewProposal(daoObj DAOObject) Proposal {
 
 // NewProposalByID loads a single role based on its ID number
 func NewProposalByID(ctx context.Context, api *eos.API, ID uint64) Proposal {
-	daoObj := LoadObject(ctx, api, "role", ID)
+	daoObj := LoadObject(ctx, api, "proposal", ID)
 	return NewProposal(daoObj)
 }
 

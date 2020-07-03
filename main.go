@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/hypha-dao/daoctl/cmd"
+	"github.com/GovtBlockchainAssoc/daoctl/cmd"
 )
 
 func main() {

@@ -15,8 +15,8 @@ import (
 
 var createCmd = &cobra.Command{
 	Use:   "create -f [filename]",
-	Short: "create an object based on the JSON file",
-	Long:  "create an object based on the JSON file",
+	Short: "create an object based on the JSON file (use this to create new proposals)",
+	Long:  "create an object based on the JSON file (use this to create new proposals)",
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx := context.Background()
 

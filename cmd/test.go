@@ -20,7 +20,7 @@ const charset = "abcdefghijklmnopqrstuvwxyz" +
 
 const creator = "eosio"
 const defaultKey = ""
-const repoHome = "/Users/max/dev/hypha/eosio-contracts"
+const repoHome = "/Users/max/dev/gba/eosio-contracts"
 
 var testingKey ecc.PublicKey
 
@@ -310,5 +310,6 @@ var testCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(testCmd)
+	// not used yet
+	//RootCmd.AddCommand(testCmd)
 }

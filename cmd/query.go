@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/GovtBlockchainAssoc/daoctl/models"
+	"github.com/GovtBlockchainAssoc/daoctl/views"
 	"github.com/alexeyco/simpletable"
-	"github.com/hypha-dao/daoctl/models"
-	"github.com/hypha-dao/daoctl/views"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/tidwall/gjson"
@@ -130,7 +130,7 @@ func getString(result gjson.Result, element string) string {
 func init() {
 	RootCmd.AddCommand(queryCmd)
 	queryCmd.Flags().StringP("account", "", "", "member's account to query")
-	queryCmd.Flags().StringP("contract", "", "dao.hypha", "query actions called on this smart contract (defaults to DAO)")
+	queryCmd.Flags().StringP("contract", "", "dao.gba", "query actions called on this smart contract (defaults to DAO)")
 	queryCmd.Flags().StringP("action", "", "", "action name to query on the contract (defaults to create)")
 	queryCmd.Flags().StringP("trx", "", "", "transaction ID to query for the full content of that transaction")
 	queryCmd.Flags().IntP("limit", "", 10, "maximum number of records to retrieve")

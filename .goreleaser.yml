@@ -30,7 +30,7 @@ snapshot:
   name_template: "{{ .Tag }}"
 release:
   github:
-    owner: hypha-dao
+    owner: GovtBlockchainAssoc
     name: daoctl
   draft: false
   prerelease: true

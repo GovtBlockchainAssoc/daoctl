@@ -2,5 +2,13 @@ EosioEndpoint: https://test.telos.kitchen
 AssetsAsFloat: true
 DAOContract: dao.gba
 TelosDecideContract: telos.decide
-DAOUser: alice.gba
+DAOUser: zzz.gba
 HyperionEndpoint: https://testnet.telosusa.io/v2
+VoteTokenSymbol: GBAV
+
+RewardTokenContract: token.gba
+RewardTokenSymbol: GBAR
+
+BallotPrefix: gba........
+vault-file: ~/dev/gba/gba-vault-test.json
+

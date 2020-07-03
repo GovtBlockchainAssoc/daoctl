@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/GovtBlockchainAssoc/daoctl/models"
 	"github.com/alexeyco/simpletable"
-	"github.com/hypha-dao/daoctl/models"
 )
 
 func qrActionHeader() *simpletable.Header {
