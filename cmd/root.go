@@ -18,13 +18,6 @@ import (
 
 var cfgFile string
 
-var yamlDefault = []byte(`
-EosioEndpoint: https://api.telos.kitchen
-AssetsAsFloat: true
-DAOContract: dao.gba
-TelosDecideContract: telos.decide
-`)
-
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "daoctl",
@@ -50,6 +43,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is ./daoctl.yaml)")
 	RootCmd.PersistentFlags().BoolP("debug", "", false, "Enables verbose debug messages")
+	// RootCmd.PersistentFlags().BoolP("test-environment", "", false, "Use default configurations for the test environment")
 	RootCmd.Flags().BoolP("assets-as-floats", "f", false, "Format assets objects as floats (helpful for CSV export)")
 	RootCmd.PersistentFlags().StringP("vault-file", "", "./eosc-vault.json", "Wallet file that contains encrypted key material")
 	//RootCmd.PersistentFlags().IntP("delay-sec", "", 0, "Set time to wait before transaction is executed, in seconds. Defaults to 0 second.")
@@ -81,7 +75,7 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
 	} else {
-		viper.ReadConfig(bytes.NewBuffer(yamlDefault))
+		viper.ReadConfig(bytes.NewBuffer(getDefaultConfigYaml()))
 	}
 
 	viper.SetEnvPrefix("daoctl")
@@ -103,16 +97,17 @@ func initConfig() {
 	colorCyan := "\033[36m"
 	colorReset := "\033[0m"
 	info, err := api.GetInfo(context.Background())
-	if err != nil {
+	if err != nil || info == nil {
 		fmt.Print(string(colorRed), "\nWARNING: Unable to get Blockchain Node info. Please check the EosioEndpoint configuration.\n\n")
-	}
+	} else {
 
-	if hex.EncodeToString(info.ChainID) == "4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11" {
-		fmt.Print(string(colorRed), "\nWARNING: Connecting to the DAO Production Mainnet")
-	} else if hex.EncodeToString(info.ChainID) == "1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f" {
-		fmt.Print(string(colorCyan), "\nNETWORK: Connecting to the DAO Test Network")
+		if hex.EncodeToString(info.ChainID) == "4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11" {
+			fmt.Print(string(colorRed), "\nWARNING: Connecting to the DAO Production Mainnet")
+		} else if hex.EncodeToString(info.ChainID) == "1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f" {
+			fmt.Print(string(colorCyan), "\nNETWORK: Connecting to the DAO Test Network")
+		}
+		fmt.Println(string(colorReset))
 	}
-	fmt.Println(string(colorReset))
 }
 
 func recurseViperCommands(root *cobra.Command, segments []string) {
@@ -134,4 +129,29 @@ func recurseViperCommands(root *cobra.Command, segments []string) {
 	for _, cmd := range root.Commands() {
 		recurseViperCommands(cmd, append(segments, cmd.Name()))
 	}
+}
+
+func getDefaultConfigYaml() []byte {
+	defaultYaml := []byte(`
+AssetsAsFloat: true
+DAOContract: dao.gba
+TelosDecideContract: telos.decide
+RewardTokenContract: token.gba
+RewardTokenSymbol: GBAR
+BallotPrefix: gba........
+TelosDecideContract: telos.decide
+VoteTokenSymbol: GBAV
+EosioEndpoint: https://test.telos.kitchen
+HyperionEndpoint: https://testnet.telosusa.io/v2`)
+
+	return defaultYaml
+	// 	prodEnvYaml := []byte(`
+	// EosioEndpoint: https://api.telos.kitchen
+	// HyperionEndpoint: https://mainnet.telosusa.io/v2`)
+
+	// if viper.GetBool("test-environment") {
+	// 	return append(defaultYaml, testEnvYaml...)
+	// } else {
+	// 	return append(defaultYaml, prodEnvYaml...)
+	// }
 }

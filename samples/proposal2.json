@@ -1,0 +1,36 @@
+{
+  "scope": "proposal",
+  "names": [
+    {
+      "key": "owner",
+      "value": "zzz.gba"
+    },
+    {
+      "key": "recipient",
+      "value": "zzz.gba"
+    }
+  ],
+  "strings": [
+    {
+      "key": "title",
+      "value": "Test 2"
+    },
+    {
+      "key": "description",
+      "value": "Another GBA Proposal Test"
+    }
+  ],
+  "assets": [
+    {
+      "key": "vote_token_amount",
+      "value": "10.00 GBAV"
+    },
+    {
+      "key": "reward_token_amount",
+      "value": "7.50 GBAR"
+    }
+  ],
+  "ints":[],
+  "time_points": [],
+  "trxs": []
+}

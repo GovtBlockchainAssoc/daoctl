@@ -5,6 +5,5 @@ daoctl.exe
 .DS_Store
 .github
 dao-backup-*
-*.json
 test-payloads/
 dist/

@@ -1,14 +1,24 @@
+# endpoint for the blockchain
 EosioEndpoint: https://test.telos.kitchen
-AssetsAsFloat: true
-DAOContract: dao.gba
-TelosDecideContract: telos.decide
-DAOUser: zzz.gba
-HyperionEndpoint: https://testnet.telosusa.io/v2
-VoteTokenSymbol: GBAV
 
+# endpoint for Hyperion, which feeds history records for the 'query' command
+HyperionEndpoint: https://testnet.telosusa.io/v2
+
+# display option - assets can either be viewed as asset objects (no commas) or just floats
+AssetsAsFloat: true
+
+# account name holding the DAO contract
+DAOContract: dao.gba
+
+# when submitting actions, use this account (need to combine with a vault file)
+# TODO: add vault file to this configuration as an option in addition to the eosc option
+DAOUser: zzz.gba
+
+# reward token
 RewardTokenContract: token.gba
 RewardTokenSymbol: GBAR
 
+# telos decide parameters
 BallotPrefix: gba........
-vault-file: ~/dev/gba/gba-vault-test.json
-
+TelosDecideContract: telos.decide
+VoteTokenSymbol: GBAV

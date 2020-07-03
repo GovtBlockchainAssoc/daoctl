@@ -66,7 +66,7 @@ func NewMember(ctx context.Context, api *eos.API, acct eos.Name) Member {
 
 // MemberRecord represents a single row in the dao::members table
 type MemberRecord struct {
-	Member eos.Name `json:"member"`
+	MemberName eos.Name `json:"member"`
 }
 
 // Members retrieves a list of all of the DAO members, including balances
@@ -85,7 +85,7 @@ func Members(ctx context.Context, api *eos.API) []Member {
 	var members []Member
 	members = make([]Member, len(memberRecords))
 	for index, memberRecord := range memberRecords {
-		members[index] = NewMember(ctx, api, memberRecord.Member)
+		members[index] = NewMember(ctx, api, memberRecord.MemberName)
 	}
 
 	return members
