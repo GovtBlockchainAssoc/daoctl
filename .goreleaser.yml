@@ -1,20 +1,17 @@
-env_files:
-  github_token: ~/.config/releaser/github_token
+# env_files:
+#   github_token: ~/.config/releaser/github_token
 before:
   hooks:
-    # You may remove this if you don't use go modules.
     - go mod download
 builds:
-  - 
-    env:
+  - env:
       - CGO_ENABLED=0
     goos:
       - windows
       - darwin
       - linux
 archives:
-  - 
-    replacements:
+  - replacements:
       darwin: Darwin
       linux: Linux
       windows: Windows
@@ -25,7 +22,7 @@ archives:
       - goos: windows
         format: zip
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 snapshot:
   name_template: "{{ .Tag }}"
 release:
@@ -38,8 +35,8 @@ changelog:
   sort: asc
   filters:
     exclude:
-    - '^docs:'
-    - '^test:'
+      - "^docs:"
+      - "^test:"
 # signs:
 #   artifacts: checksum
 #   cmd: gpg2

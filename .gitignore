@@ -3,7 +3,6 @@ daoctl
 .vscode
 daoctl.exe
 .DS_Store
-.github
 dao-backup-*
 test-payloads/
 dist/
