@@ -155,3 +155,36 @@ Currently, on the testnet, the voting period is set to only 60 seconds.  This is
 ./daoctl close 14
 ```
 If the proposal passes, the token quantities in the proposal are paid. 
+
+## Current daoctl Help
+For most up-to-date help, run ```./daoctl -h```.
+```
+Decentralized Autonomous Organization (DAO) control CLI.
+
+Example use:
+	daoctl get proposals --scope passedprops
+	daoctl get proposal 34
+
+Usage:
+  daoctl [command]
+
+Available Commands:
+  backup      creates a local backup of current DAO data
+  close       close a proposal
+  create      create an object based on the JSON file (use this to create new proposals)
+  get         retrieve and display objects from the DAO on-chain smart contract
+  help        Help about any command
+  query       Query action history on the DAO for specific users
+  vault       The vault is a secure key store (wallet). Your key is stored encrypted by the passphrase.
+  vote        vote pass or fail on a ballot
+
+Flags:
+  -f, --assets-as-floats    Format assets objects as floats (helpful for CSV export)
+      --config string       config file (default is ./daoctl.yaml)
+      --debug               Enables verbose debug messages
+      --expiration int      Set time before transaction expires, in seconds. Defaults to 30 seconds. (default 30)
+  -h, --help                help for daoctl
+      --vault-file string   Wallet file that contains encrypted key material (default "./eosc-vault.json")
+
+Use "daoctl [command] --help" for more information about a command.
+```
