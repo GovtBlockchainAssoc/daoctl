@@ -98,7 +98,7 @@ Now you are ready to sign transactions with ```daoctl```.
 
 ## Create a Proposal
 Paste the following into a file named "proposal.json".
-``` json
+```javascript
 {
     "scope": "proposal",
     "names": [
