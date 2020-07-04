@@ -1,0 +1,23 @@
+# endpoint for the blockchain
+EosioEndpoint: https://test.telos.kitchen
+
+# endpoint for Hyperion, which feeds history records for the 'query' command
+HyperionEndpoint: https://testnet.telosusa.io/v2
+
+# display option - assets can either be viewed as asset objects (no commas, with symbol) or just floats (commas, no symbol)
+AssetsAsFloat: true
+
+# account name holding the DAO contract
+DAOContract: dao.gba
+
+# your account name (you will also need a vault file)
+DAOUser: doris.gba  # pretend user on testnet
+
+# reward token
+RewardTokenContract: token.gba
+RewardTokenSymbol: GBAR
+
+# telos decide parameters
+BallotPrefix: gba........
+TelosDecideContract: telos.decide
+VoteTokenSymbol: GBAV
