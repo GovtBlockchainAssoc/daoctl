@@ -90,7 +90,7 @@ VoteTokenSymbol: GBAV
 ```
 ./daoctl vault create add --import
 ```
-Paste in your private key, and secure it with a password. Your private key is encrypted with this password, and you will enter it each time you sign a transaction.
+Paste in your private key, and secure it with a password. Your private key is encrypted with this password, and you will enter it each time you sign a transaction. (You can use blank <Enter> or just a short PIN for low security.)
 
 See ```eosc``` docs for more info: https://github.com/eoscanada/eosc#eosc-vault-management
 
